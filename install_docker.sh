@@ -10,4 +10,10 @@ docker pull ranbir18/my-class-activity:V2
 # Example: Run the pulled Docker image
 # docker run -d -p 80:80 ranbir18/my-class-activity:V2
 
-echo "Hello World from \$(hostname -f)" > /var/www/html/index.html
+#!/bin/bash
+
+apt-get update
+apt-get install -y httpd
+systemctl start httpd
+systemctl enable httpd
+echo "Hello World from $(hostname -f)" > /var/www/html/index.html
