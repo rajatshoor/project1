@@ -12,8 +12,9 @@ docker pull ranbir18/my-class-activity:V2
 
 #!/bin/bash
 
-apt-get update
-apt-get install -y httpd
-systemctl start httpd
-systemctl enable httpd
+sudo apt install apache2
+sudo apt install apache2
+sudo systemctl start apache2
+sudo ufw allow 'Apache'
+
 echo "Hello World from $(hostname -f)" > /var/www/html/index.html
