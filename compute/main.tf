@@ -16,7 +16,7 @@ resource "aws_launch_template" "web" {
   image_id               = data.aws_ami.ubuntu.id
   instance_type          = var.web_instance_type
   vpc_security_group_ids = [var.web_sg]
-  user_data              = filebase64("install_apache.sh")
+  user_data              = filebase64("install_docker.sh")
 
   tags = {
     Name = "web"
