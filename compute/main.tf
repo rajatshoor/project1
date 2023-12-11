@@ -1,24 +1,19 @@
 # --- compute/main.tf ---
 
-data "aws_ami" "linux" {
+data "aws_ami" "ubuntu" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["amazon"]
+  owners = ["099720109477"] # Canonical owner ID for Ubuntu AMIs
 }
 
 resource "aws_launch_template" "web" {
   name_prefix            = "web"
-  image_id               = data.aws_ami.linux.id
+  image_id               = data.aws_ami.ubuntu.id
   instance_type          = var.web_instance_type
   vpc_security_group_ids = [var.web_sg]
   user_data              = filebase64("install_apache.sh")
@@ -40,4 +35,3 @@ resource "aws_autoscaling_group" "web" {
     version = "$Latest"
   }
 }
-
