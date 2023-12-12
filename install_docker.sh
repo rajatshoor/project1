@@ -10,7 +10,7 @@ docker pull ranbir18/my-class-activity:V2
 # Example: Run the pulled Docker image
 # docker run -d -p 80:80 ranbir18/my-class-activity:V2
 
-sudo apt-get update
+#!/bin/bashsudo apt-get update
 sudo apt-get install -y apache2
 sudo systemctl start apache2
 sudo systemctl enable apache2
