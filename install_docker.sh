@@ -1,12 +1,25 @@
 #!/bin/bash
+
+# Update package lists
 apt-get update
+
+# Install Docker
 apt-get install -y docker.io
+
+# Start the Docker service
 systemctl start docker
+
+# Enable Docker to start on boot
 systemctl enable docker
 
-# Pull a predefined Docker image
+# Pull a Docker image
 docker pull ranbir18/my-class-activity:V2
-docker run -t ranbir18/my-class-activity:V2
+
+# Run the Docker container
+docker run ranbir18/my-class-activity:V2
+chmod +x docker_script.sh
+./docker_script.sh
+
 
 
 #!/bin/bashsudo apt-get update
