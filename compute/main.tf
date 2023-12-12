@@ -35,3 +35,25 @@ resource "aws_autoscaling_group" "web" {
     version = "$Latest"
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "cpu_utilization_alarm" {
+  alarm_name          = "web-cpu-utilization-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "300"  # 5 minutes
+  statistic           = "Average"
+  threshold           = "80"
+  actions_enabled     = true
+
+  dimensions = {
+    InstanceId = aws_autoscaling_group.web.id
+  }
+
+  alarm_description = "Alarm for high CPU utilization on instances in the web autoscaling group"
+
+  alarm_actions = [
+    # Add the ARN of your SNS topic or any other actions you want to perform when the alarm is triggered
+  ]
+}
