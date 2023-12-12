@@ -35,19 +35,3 @@ resource "aws_autoscaling_group" "web" {
     version = "$Latest"
   }
 }
-# Add a CloudWatch metric alarm for high CPU utilization
-resource "aws_cloudwatch_metric_alarm" "high_cpu" {
-  alarm_name          = "high-cpu-utilization"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "120"
-  statistic           = "Average"
-  threshold           = "80"
-  alarm_description   = "This metric monitors ec2 cpu utilization"
-  dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.web.name
-  }
-  alarm_actions = [var.alarm_action_arn]
-}
