@@ -10,11 +10,11 @@ docker pull ranbir18/my-class-activity:V2
 # Example: Run the pulled Docker image
 # docker run -d -p 80:80 ranbir18/my-class-activity:V2
 
-#!/bin/bash
-
-sudo apt install apache2
-sudo apt install apache2
+sudo apt-get update
+sudo apt-get install -y apache2
 sudo systemctl start apache2
-sudo ufw allow 'Apache'
+sudo systemctl enable apache2
+echo "Hello, World!" | sudo tee /var/www/html/index.html
 
-echo "Hello World from $(hostname -f)" > /var/www/html/index.html
+
+
