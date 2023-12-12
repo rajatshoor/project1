@@ -38,7 +38,7 @@ resource "aws_launch_template" "web" {
   image_id               = data.aws_ami.ubuntu.id
   instance_type          = var.web_instance_type
   vpc_security_group_ids = [var.web_sg]
-  user_data              = filebase64("install_docker_cloudwatch.sh")
+  user_data              = filebase64("install_docker.sh")
 
   iam_instance_profile {
     name = aws_iam_role.cloudwatch_role.name
