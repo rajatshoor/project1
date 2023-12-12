@@ -36,14 +36,11 @@ resource "aws_instance" "example" {
   subnet_id     = var.public_subnet
 
   user_data = <<-EOF
-              #!/bin/bash
-              sudo apt-get update
-              sudo apt-get install -y docker.io
-
-              # Install CloudWatch agent
+              
+                        
               sudo yum install -y amazon-cloudwatch-agent
 
-              # Configure CloudWatch agent
+              
               sudo tee /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOL
               {
                 "metrics": {
@@ -66,7 +63,7 @@ resource "aws_instance" "example" {
               }
               EOL
 
-              # Start CloudWatch agent
+              
               sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
               EOF
 }
