@@ -40,26 +40,20 @@ resource "aws_instance" "example" {
               sudo apt-get update
               sudo apt-get install -y docker.io
 
-              # Install CloudWatch agent
-              sudo yum install -y amazon-cloudwatch-agent
+              # Install AWS CloudWatch agent
+              sudo apt-get install -y unzip
+              wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+              sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
 
               # Configure CloudWatch agent
               sudo tee /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOL
               {
                 "metrics": {
-                  "append_dimensions": {
-                    "InstanceId": "\$(curl -s http://169.254.169.254/latest/meta-data/instance-id)"
-                  },
                   "metrics_collected": {
                     "mem": {
                       "measurement": [
                         "mem_used_percent"
                       ]
-                    },
-                    "statsd": {
-                      "service_address": ":8125",
-                      "metrics_collection_interval": 60,
-                      "metrics_aggregation_interval": 300
                     }
                   }
                 }
@@ -70,6 +64,5 @@ resource "aws_instance" "example" {
               sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
               EOF
 }
-
 
 
