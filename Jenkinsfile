@@ -63,37 +63,6 @@ pipeline {
                }
            }
        }
-       
-
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    docker.build('your-docker-image-name:latest')
-                    docker.withRegistry('https://your-docker-registry', 'docker-credentials-id') {
-                        docker.image('your-docker-image-name:latest').push()
-                    }
-                }
-            }
-        }
-
-        stage('Deploy to AWS') {
-            steps {
-                script {
-                    // Add AWS deployment steps here
-                    //sh 'aws cloudformation deploy --template-file your-cloudformation-template.yml --stack-name your-stack-name --capabilities CAPABILITY_IAM'
-                }
-            }
-        }
-    }
-
-
 
         stage('Apply') {
             when {
