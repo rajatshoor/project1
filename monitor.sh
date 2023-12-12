@@ -1,26 +1,37 @@
-#!/bin/bash
+# --- compute/main.tf ---
 
-# Specify your AWS region
-AWS_REGION="us-east-1"
+data "aws_ami" "ubuntu" {
+  most_recent = true
 
-# List all EC2 instance IDs in the region
-INSTANCE_IDS=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[*].Instances[*].InstanceId' --output text)
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
 
-# Loop through each instance ID
-for INSTANCE_ID in $INSTANCE_IDS; do
-    # Create a CloudWatch Alarm for CPUUtilization metric
-    aws cloudwatch put-metric-alarm \
-        --region $AWS_REGION \
-        --alarm-name "CPUUtilizationAlarm-${INSTANCE_ID}" \
-        --alarm-description "Alarm for high CPU utilization on instance ${INSTANCE_ID}" \
-        --actions-enabled \
-        --alarm-actions "arn:aws:sns:your-region:your-account-id:your-sns-topic" \
-        --metric-name CPUUtilization \
-        --namespace AWS/EC2 \
-        --statistic Average \
-        --dimensions "Name=InstanceId,Value=${INSTANCE_ID}" \
-        --period 300 \
-        --threshold 80 \
-        --comparison-operator GreaterThanOrEqualToThreshold \
-        --evaluation-periods 2
-done
+  owners = ["099720109477"] # Canonical owner ID for Ubuntu AMIs
+}
+
+resource "aws_launch_template" "web" {
+  name_prefix            = "web"
+  image_id               = data.aws_ami.ubuntu.id
+  instance_type          = var.web_instance_type
+  vpc_security_group_ids = [var.web_sg]
+  user_data              = filebase64("install_docker.sh")
+
+  tags = {
+    Name = "web"
+  }
+}
+
+resource "aws_autoscaling_group" "web" {
+  name                = "web"
+  vpc_zone_identifier = tolist(var.public_subnet)
+  min_size            = 2
+  max_size            = 3
+  desired_capacity    = 2
+
+  launch_template {
+    id      = aws_launch_template.web.id
+    version = "$Latest"
+  }
+}
