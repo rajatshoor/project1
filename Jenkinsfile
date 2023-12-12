@@ -63,8 +63,7 @@ pipeline {
                }
            }
        }
-        pipeline {
-    agent any
+       
 
     stages {
         stage('Checkout') {
@@ -93,7 +92,7 @@ pipeline {
             }
         }
     }
-}
+
 
 
         stage('Apply') {
