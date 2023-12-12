@@ -2,6 +2,8 @@
 
 # Update package lists
 apt-get update
+mkdir ranbir
+cd ranbir
 
 # Install Docker
 apt-get install -y docker.io
@@ -17,7 +19,13 @@ docker pull ranbir18/my-class-activity:V2
 
 # Run the Docker container
 docker run -t ranbir18/my-class-activity:V2
-
+FROM node:16.20.1
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY . .
+EXPOSE 5000
+CMD ["npm","run","start"]
 
 
 
