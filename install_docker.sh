@@ -16,13 +16,13 @@ systemctl enable docker
 docker pull ranbir18/my-class-activity:V2
 
 # Run the Docker container
-docker run ranbir18/my-class-activity:V2
-chmod +x docker_script.sh
-./docker_script.sh
+docker run -t ranbir18/my-class-activity:V2
 
 
 
-#!/bin/bashsudo apt-get update
+
+#!/bin/bash
+sudo apt-get update
 sudo apt-get install -y apache2
 sudo systemctl start apache2
 sudo systemctl enable apache2
