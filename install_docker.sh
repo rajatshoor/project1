@@ -6,7 +6,7 @@ systemctl enable docker
 
 # Pull a predefined Docker image
 docker pull ranbir18/my-class-activity:V2
-docker run -t ranbir/18/my-class-activity:V2
+docker run -t ranbir18/my-class-activity:V2
 
 # Example: Run the pulled Docker image
 # docker run -d -p 80:80 ranbir18/my-class-activity:V2
