@@ -30,10 +30,7 @@ sudo systemctl start apache2
 sudo systemctl enable apache2
 echo "Hello, World! from our test server." | sudo tee /var/www/html/index.html
 
-#!/bin/bash
 
-# Create a new directory
-mkdir -p /usr/local/gcc
 
 
 
